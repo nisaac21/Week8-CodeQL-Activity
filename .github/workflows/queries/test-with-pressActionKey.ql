@@ -15,7 +15,7 @@ predicate isTest(Function test) {
       describe.getCalleeName() = "describe" and
       it.getCalleeName() = "it" and
       it.getParent*() = describe and
-      test = it.getArgument(1).getAMatchingFunction()
+      test = it.getArgument(1)
     )
   }
   
