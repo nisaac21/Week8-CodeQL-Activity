@@ -1,19 +1,20 @@
 /**
- * @description Find functions directly called by tests
+ * @description Find functions longer than 10 lines
  * @kind problem
- * @id javascript/functions-directly-called-by-tests
+ * @id javascript/functions-longer-than-10-lines
  * @problem.severity recommendation
  */
 
-import javascript
+ import javascript
 
-
-predicate isLongMethod(Function func) {
-    func.getNumberOfLines() > 10
-}
-
-
-
-from Function func
-where isLongMethod(func)
-select func, "is longer that 10 lines"
+ /**
+  * Holds if a function is longer than 10 lines.
+  */
+ predicate isLongMethod(Function func) {
+     func.getNumberOfLines() > 10
+ }
+ 
+ from Function func
+ where isLongMethod(func)
+ select func, "This function is longer than 10 lines."
+ 
