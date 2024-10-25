@@ -1,7 +1,7 @@
 /**
- * @description Find functions directly called by tests
+ * @description Find test functions that directly call 'pressActionKey'
  * @kind problem
- * @id javascript/functions-directly-called-by-tests
+ * @id javascript/test-with-pressActionKey
  * @problem.severity recommendation
  */
 
@@ -11,21 +11,25 @@ import javascript
  * Holds if a function is a test.
  */
 predicate isTest(Function test) {
-  exists(CallExpr describe, CallExpr it |
-    describe.getCalleeName() = "describe" and
-    it.getCalleeName() = "it" and
-    it.getParent*() = describe and
-    test = it.getArgument(1)
-  )
+    exists(CallExpr describe, CallExpr it |
+      describe.getCalleeName() = "describe" and
+      it.getCalleeName() = "it" and
+      it.getParent*() = describe and
+      test = it.getArgument(1).getAMatchingFunction()
+    )
   }
-
-predicate callsPressActionKey(Function caller){
-    exists(FunctionCall call |
-        call.getEnclosingFunction() = caller and
-        call.getCalleeName() = "pressActionKey"
-      )
-}
-
-from Function test
-where isTest(test) and callsPressActionKey(test)
-select test, "This test function calls 'pressActionKey'."
+  
+  /**
+   * Holds if a function calls 'pressActionKey'.
+   */
+  predicate callsPressActionKey(Function caller) {
+    exists(CallExpr call |  // Changed from FunctionCall to CallExpr
+      call.getEnclosingFunction() = caller and
+      call.getCalleeName() = "pressActionKey"
+    )
+  }
+  
+  // Main query to find tests that call pressActionKey
+  from Function test
+  where isTest(test) and callsPressActionKey(test)
+  select test, "This test function calls 'pressActionKey'."
