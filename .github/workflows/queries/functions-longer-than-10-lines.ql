@@ -1,3 +1,10 @@
+/**
+ * @description Find functions directly called by tests
+ * @kind problem
+ * @id javascript/functions-directly-called-by-tests
+ * @problem.severity recommendation
+ */
+
 import javascript
 
 
